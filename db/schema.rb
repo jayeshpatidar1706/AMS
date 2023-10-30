@@ -10,18 +10,18 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema[7.0].define(version: 2023_10_25_164355) do
+ActiveRecord::Schema[7.0].define(version: 2023_10_26_164812) do
   create_table "asset_histories", force: :cascade do |t|
     t.integer "asset_id", null: false
     t.time "assigned_at"
     t.time "return_at"
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
-    t.integer "employee_id", null: false
     t.string "asset_name"
-    t.string "employee_name"
+    t.string "user_name"
+    t.integer "user_id", null: false
     t.index ["asset_id"], name: "index_asset_histories_on_asset_id"
-    t.index ["employee_id"], name: "index_asset_histories_on_employee_id"
+    t.index ["user_id"], name: "index_asset_histories_on_user_id"
   end
 
   create_table "assets", force: :cascade do |t|
@@ -29,18 +29,6 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_25_164355) do
     t.datetime "created_at", null: false
     t.datetime "updated_at", null: false
     t.date "purchase_date"
-    t.integer "employee_id"
-    t.index ["employee_id"], name: "index_assets_on_employee_id"
-  end
-
-  create_table "employees", force: :cascade do |t|
-    t.string "name"
-    t.string "department"i
-    t.decimal "age"
-    t.string "address"
-    t.date "DOB"
-    t.datetime "created_at", null: false
-    t.datetime "updated_at", null: false
   end
 
   create_table "users", force: :cascade do |t|
@@ -53,12 +41,18 @@ ActiveRecord::Schema[7.0].define(version: 2023_10_25_164355) do
     t.datetime "updated_at", null: false
     t.string "jti", null: false
     t.string "role", default: "Employee"
+    t.string "name"
+    t.string "department"
+    t.string "address"
+    t.date "BOD"
+    t.integer "age"
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["jti"], name: "index_users_on_jti", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
   end
 
   add_foreign_key "asset_histories", "assets"
-  add_foreign_key "asset_histories", "employees"
-  add_foreign_key "assets", "employees"
+  add_foreign_key "asset_histories", "users"
 end
+
+# rspec rubocop damge_description enumForRole 
